@@ -6,35 +6,37 @@ console.log("******************************************")
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+
 const PressToContinuePrompt = require('inquirer-press-to-continue');
+const Shape = require("./lib/shapes")
 
 inquirer.registerPrompt('press-to-continue', PressToContinuePrompt);
 
 
 
 const questions = {
-    sameQuestions :[
+    sameQuestions: [
         {
-        type:"list",
-        name:"shape",
-        message: "Please specifiy the shape of your logo",
-        choices : ["circle","triangle","square"]
+            type: "list",
+            name: "shape",
+            message: "Please specifiy the shape of your logo",
+            choices: ["circle", "triangle", "square", "rectangle"]
         },
-        { 
-        type: "input",
-        name: "text",
-        message: "Enter the 3 digit text you would like to have on the Logo",
-        validate: (input) => {
-            if (input.length !== 3) {
-                return "Sorry, the logo should have 3 letters";
+        {
+            type: "input",
+            name: "text",
+            message: "Enter the 3 digit text you would like to have on the Logo",
+            validate: (input) => {
+                if (input.length !== 3) {
+                    return "Sorry, the logo should have 3 letters";
+                }
+                return true;
             }
-            return true;
-        }
 
         },
         {
-            type:"input",
-            name:"color",
+            type: "input",
+            name: "color",
             message: "Please specifiy the color or a hexadecimal number of the color you would like to have as text color",
             validate: (input) => {
                 if (input.match([/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/])) {
@@ -45,8 +47,8 @@ const questions = {
 
         },
         {
-            type:"input",
-            name:"shapeColor",
+            type: "input",
+            name: "shapeColor",
             message: "Please specifiy the shape color or a hexadecimal number of the color you would like to have on the shape",
             validate: (input) => {
                 if (input.match(/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/)) {
@@ -56,8 +58,10 @@ const questions = {
             }
 
         }
-        
-    ] 
+
+    ]
+    
+
 }
 
 
@@ -77,24 +81,27 @@ async function callInquirers() {
             pressToContinueMessage: `'Press Enter key to continue...'\n`,
         });
 
-    }
-    
-    const {shape} = await inquirer.prompt(questions.sameQuestions)
-    try {
-    switch (shape) {
-        case "circle":
-            await ;
-            break;
-    }
-} catch (err) {
-    console.error(err)
-}
+    const{shape,text,color,shapeColor} = await inquirer.prompt(questions.sameQuestions)
+
+
+    const newShape= new Shape (shape,text,color,shapeColor)
+
+         newShape.circleWrite(shape)
+  }
+  
+  
 
 
 
 
-function circlePromt(){
-    ...questions.sameQuestions
-}
+
+
+
+
 
 callInquirers();
+
+
+
+
+
