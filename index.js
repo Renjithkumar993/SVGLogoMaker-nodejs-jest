@@ -8,7 +8,10 @@ const fs = require("fs");
 
 
 const PressToContinuePrompt = require('inquirer-press-to-continue');
-const Shape = require("./lib/shapes")
+const { Circle, Triangle, Rectangle, Square } = require("./lib/shapes")
+
+
+
 
 inquirer.registerPrompt('press-to-continue', PressToContinuePrompt);
 
@@ -59,16 +62,42 @@ const questions = {
 
         }
 
+    ],
+    additionalQuestions: [
+        {
+            type: "confirm",
+            name: "addstyleconfirm",
+            message: "would you like to add some styling to your logo"
+        }
+
+    ],
+
+    styleQuestions: [
+        {
+            type: "list",
+            name: "fontfamily",
+            message: "please choose font -family from the list",
+            choices: ["Arial", "Verdana", "fantasy", "monospace"]
+        },
+
+        {
+            type: "input",
+            name: "borderColor",
+            messge: "please choose the border color",
+
+        },
+
+        {
+            type: "list",
+            name: "bordersize",
+            message: "please choose boarder radius",
+            choices: ["1", "2", "3", "4", "5"]
+        }
+
     ]
-    
+
 
 }
-
-
-
-
-
-
 
 
 async function callInquirers() {
@@ -81,23 +110,41 @@ async function callInquirers() {
             pressToContinueMessage: `'Press Enter key to continue...'\n`,
         });
 
-    const{shape,text,color,shapeColor} = await inquirer.prompt(questions.sameQuestions)
-
-
-    const newShape= new Shape (shape,text,color,shapeColor)
-
-         newShape.circleWrite(shape)
-  }
-  
-  
+    const { shape, text, color, shapeColor, } = await inquirer.prompt(questions.sameQuestions)
 
 
 
+    const newQuestions = await inquirer.prompt(questions.additionalQuestions);
 
+    let data = {};
+    if (newQuestions.addstyleconfirm == true) {
 
+        data = await inquirer.prompt(questions.styleQuestions);
+        writeSvg();
+    } else {
+        return writeSvg()
+    }
 
+    async function writeSvg() {
+        const {fontfamily, borderColor, bordersize } = data;
+        console.log(fontfamily);
+        switch (shape) {
+            case "circle": const newCircle = new Circle(text, color, shapeColor, fontfamily, borderColor, bordersize)
+                await newCircle.printToSvg();
+                break;
+            case "triangle": const newTriangle = new Triangle(text, color, shapeColor, fontfamily, borderColor, bordersize)
+                await newTriangle.printToSvg();
+                break;
+            case "rectangle": const newRectangle = new Rectangle(text, color, shapeColor, fontfamily, borderColor, bordersize)
+                await newRectangle.printToSvg();
+                break;
+            case "square": const newSquare = new Square(text, color, shapeColor, fontfamily, borderColor, bordersize)
+                await newSquare.printToSvg();
+                break;
+        }
+    }
 
-
+}
 
 callInquirers();
 
