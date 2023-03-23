@@ -1,5 +1,5 @@
 # SVGLogoMaker-nodejs-jest
- This is a Node.js command-line application that allows users to generate simple logos for their projects. Users can select a shape, color, and text for their logo, and the application will generate an SVG file that can be opened in a web browser.
+ This is a Node.js command-line application that allows users to generate simple logos for their projects. Users can select a shape, color, border color and size and text for their logo, and the application will generate an SVG file that can be opened in a web browser.
 
 ## Features
 
