@@ -127,7 +127,6 @@ async function callInquirers() {
 
     async function writeSvg() {
         const {fontfamily, borderColor, bordersize } = data;
-        console.log(fontfamily);
         switch (shape) {
             case "circle": const newCircle = new Circle(text, color, shapeColor, fontfamily, borderColor, bordersize)
                 await newCircle.printToSvg();
